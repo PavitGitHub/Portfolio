@@ -17,6 +17,10 @@ const arrowUp   = document.getElementById('arrowUp');
 const arrowDown = document.getElementById('arrowDown');
 const counter   = document.getElementById('counter');
 const cursor    = document.getElementById('cursor');
+const careerBtn     = document.getElementById('careerBtn');
+const careerPanel   = document.getElementById('careerPanel');
+const careerOverlay = document.getElementById('careerOverlay');
+const careerClose   = document.getElementById('careerClose');
 
 let mouseX = -60, mouseY = -60;
 let rafPending = false;
@@ -33,6 +37,34 @@ document.addEventListener('mousemove', e => {
     });
   }
 
+});
+
+
+// CAREER PANEL 
+// panelOpen is checked by every navigation listener 
+// when true, wheel / touch / keyboard won't scroll the project titles
+let panelOpen = false;
+
+function openPanel() {
+    panelOpen = true;
+    careerPanel.classList.add('open');
+    careerOverlay.classList.add('open');
+}
+
+function closePanel() {
+    panelOpen = false;
+    careerPanel.classList.remove('open');
+    careerOverlay.classList.remove('open');
+}
+
+careerBtn.addEventListener('click', openPanel);
+careerClose.addEventListener('click', closePanel);
+careerOverlay.addEventListener('click', closePanel);
+
+// Cursor grows when hovering Career button and close button
+[careerBtn, careerClose].forEach(el => {
+    el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
 });
 
 // Project Items
@@ -75,7 +107,6 @@ function render(animate = true) {
 
         // Suppress transitions on first render
         el.style.transition = animate ? '' : 'none';
-
         el.style.opacity       = opacity;
         el.style.transform     = `translateY(calc(-50% + ${translateY}px))`;
         el.style.top           = '50%';
