@@ -147,7 +147,7 @@ function navigate(dir) {
 
 // Mouse wheel
 window.addEventListener('wheel', e => {
-    navigate(e.deltaY > 0 ? 1 : -1);
+    if (!panelOpen) navigate(e.deltaY > 0 ? 1 : -1);
 }, { passive: true });
 
 // Touch swipe
@@ -160,7 +160,8 @@ window.addEventListener('touchstart', e => {
 window.addEventListener('touchend', e => {
     if (touchY === null) return;
     const dy = touchY - e.changedTouches[0].clientY;
-    if (Math.abs(dy) > 30) navigate(dy > 0 ? 1 : -1);
+    // Only navigate projects if the career panel is closed
+    if (!panelOpen && Math.abs(dy) > 30) navigate(dy > 0 ? 1 : -1);
     touchY = null;
 }, { passive: true });
 
@@ -170,8 +171,11 @@ arrowDown.addEventListener('click', () => navigate(1));
 
 // Keyboard arrows
 document.addEventListener('keydown', e => {
-    if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  navigate(-1);
-    if (e.key === 'ArrowDown' || e.key === 'ArrowRight') navigate(1);
+    if (!panelOpen) {
+        if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  navigate(-1);
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') navigate(1);
+    }
+    if (e.key === 'Escape') closePanel();
 });
 
 
