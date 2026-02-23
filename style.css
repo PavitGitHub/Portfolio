@@ -27,7 +27,7 @@ html, body {
     position: fixed;
     width: 6px;
     height: 6px;
-    background: var (--accent);
+    background: var(--accent);
     border-radius: 50%;
     pointer-events: none;
     z-index: 9999;
@@ -53,6 +53,16 @@ body::before {
     height: 100vh;
     position: relative;
     animation: fadeUp 1s ease both;
+}
+
+.line-left, .line-right {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1px;
+    height: 120px;
+    background: linear-gradient(to bottom, transparent, var(--accent), transparent);
+    opacity: 0.6;
 }
 
 .line-left { 

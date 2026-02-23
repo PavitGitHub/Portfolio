@@ -17,7 +17,7 @@ const arrowDown = document.getElementById('arrowDown');
 const counter   = document.getElementById('counter');
 const cursor    = document.getElementById('cursor');
 
-// Customer Cursor
+// Custom Cursor
 document.addEventListener('mousemove', e => {
     cursor.style.left = e.clientX + 'px';
     cursor.style.top  = e.clientY + 'px';
