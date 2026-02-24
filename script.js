@@ -22,6 +22,7 @@ const careerPanel   = document.getElementById('careerPanel');
 const careerOverlay = document.getElementById('careerOverlay');
 const careerClose   = document.getElementById('careerClose');
 const resumeBtn     = document.querySelector('.resume-btn');
+const linkedinBtn   = document.querySelector('.linkedin-btn');
 
 let mouseX = -60, mouseY = -60;
 let rafPending = false;
@@ -63,7 +64,7 @@ careerClose.addEventListener('click', closePanel);
 careerOverlay.addEventListener('click', closePanel);
 
 // Cursor grows when hovering Career button and close button
-[careerBtn, careerClose, resumeBtn].forEach(el => {
+[careerBtn, careerClose, resumeBtn, linkedinBtn].forEach(el => {
     el.addEventListener('mouseenter', () => cursor.classList.add('hovering'));
     el.addEventListener('mouseleave', () => cursor.classList.remove('hovering'));
 });
