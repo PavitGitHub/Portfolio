@@ -148,6 +148,11 @@ body::before {
     color: var(--fg);
     display: inline-block;
     padding: 4px 0;
+    background-image: linear-gradient(var(--accent), var(--accent));
+    background-size: 0% 1px;
+    background-repeat: no-repeat;
+    background-position: center bottom;
+    transition: color 0.25s ease, background-size 0.3s ease;
 }
 
 /* hover — title turns gold and underline grows from centre outward */
