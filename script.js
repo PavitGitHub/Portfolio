@@ -307,6 +307,7 @@ function renderDetailNav(animate = true) {
 
 function switchDetailProject(idx) {
     if (detailNavAnimating || idx === detailCurrent) return;
+    if (idx < 0 || idx >= projects.length) return;  
     detailNavAnimating = true;
     detailCurrent = idx;
 
@@ -401,31 +402,61 @@ function navigateDetail(dir) {
 }
 
 // ── HOME EVENT LISTENERS ────────────────────────────────
-window.addEventListener('wheel', e => {
-    if (appState === 'home' && !panelOpen) navigate(e.deltaY > 0 ? 1 : -1);
-}, { passive: true });
-
-let touchY = null;
-window.addEventListener('touchstart', e => { touchY = e.touches[0].clientY; }, { passive: true });
-window.addEventListener('touchend', e => {
-    if (touchY === null) return;
-    const dy = touchY - e.changedTouches[0].clientY;
-    if (appState === 'home' && !panelOpen && Math.abs(dy) > 30) navigate(dy > 0 ? 1 : -1);
-    touchY = null;
-}, { passive: true });
-
+// Arrow buttons
 arrowUp.addEventListener('click',   () => navigate(-1));
 arrowDown.addEventListener('click', () => navigate(1));
 
+// Scroll wheel — throttled on detail page to prevent rapid-fire switching
+let wheelCooldown = false;
+
+window.addEventListener('wheel', e => {
+    if (appState === 'home' && !panelOpen) {
+        navigate(e.deltaY > 0 ? 1 : -1);
+    } else if (appState === 'detail' && !panelOpen) {
+        // Let columns scroll naturally; only hijack at their boundary
+        const scrollable = e.target.closest('.detail-col');
+        if (scrollable) {
+            const { scrollTop, scrollHeight, clientHeight } = scrollable;
+            const atTop    = scrollTop === 0;
+            const atBottom = scrollTop + clientHeight >= scrollHeight - 1;
+            if (e.deltaY < 0 && !atTop)    return;
+            if (e.deltaY > 0 && !atBottom) return;
+        }
+        if (wheelCooldown) return;
+        wheelCooldown = true;
+        setTimeout(() => wheelCooldown = false, 600);
+        switchDetailProject(detailCurrent + (e.deltaY > 0 ? 1 : -1));
+    }
+}, { passive: true });
+
+// Touch swipe
+let touchY = null;
+
+window.addEventListener('touchstart', e => {
+    touchY = e.touches[0].clientY;
+}, { passive: true });
+
+window.addEventListener('touchend', e => {
+    if (touchY === null) return;
+    const dy = touchY - e.changedTouches[0].clientY;
+    if (appState === 'home' && !panelOpen && Math.abs(dy) > 30) {
+        navigate(dy > 0 ? 1 : -1);
+    } else if (appState === 'detail' && !panelOpen && Math.abs(dy) > 30) {
+        switchDetailProject(detailCurrent + (dy > 0 ? 1 : -1));
+    }
+    touchY = null;
+}, { passive: true });
+
+// Keyboard arrows
 document.addEventListener('keydown', e => {
     if (appState === 'home' && !panelOpen) {
         if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  navigate(-1);
         if (e.key === 'ArrowDown' || e.key === 'ArrowRight') navigate(1);
+    } else if (appState === 'detail' && !panelOpen) {
+        if (e.key === 'ArrowUp'   || e.key === 'ArrowLeft')  switchDetailProject(detailCurrent - 1);
+        if (e.key === 'ArrowDown' || e.key === 'ArrowRight') switchDetailProject(detailCurrent + 1);
     }
-    if (e.key === 'Escape') {
-        closePanel();
-        if (appState === 'detail') closeDetailPage();
-    }
+    if (e.key === 'Escape') { closePanel(); if (appState === 'detail') closeDetailPage(); }
 });
 
 // ── INIT ───────────────────────────────────────────────
