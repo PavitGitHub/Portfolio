@@ -82,9 +82,24 @@ body::before {
     display: flex;
     align-items: center;
     justify-content: center;
+    flex-direction: column;
     height: 100vh;
     position: relative;
     animation: fadeUp 1s ease both;
+}
+
+.scene-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.lines-wrap {
+    position: relative;
+    width: 520px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .line-left, .line-right {
@@ -97,13 +112,8 @@ body::before {
     opacity: 0.6;
 }
 
-.line-left { 
-    left: calc(50% - 260px); 
-}
-
-.line-right { 
-    right: calc(50% - 260px); 
-}
+.line-left  { left: 0; }
+.line-right { right: 0; }
 
 .column {
     display: flex;
@@ -139,6 +149,70 @@ body::before {
     fill: none;
     stroke-width: 1.5;
 }
+
+
+/* Profile Picture Design */
+.profile-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    margin-bottom: 36px;
+    animation: fadeUp 0.9s ease both;
+}
+ 
+.profile-photo-ring {
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    padding: 2px;
+    background: linear-gradient(135deg, rgba(200, 169, 110, 0.6), rgba(200, 169, 110, 0.15));
+    flex-shrink: 0;
+}
+ 
+.profile-photo {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: #1a1710;
+    border: 1.5px solid #0a0a0a;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+ 
+/* Placeholder avatar — opacity dimmed until real photo is added */
+.profile-photo svg {
+    opacity: 0.45;
+}
+ 
+/* Real photo — swap the <svg> for <img src="assets/your-photo.jpg"> */
+.profile-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 50%;
+    object-position: bottom;
+}
+ 
+.profile-subtitle {
+    font-family: 'DM Mono', monospace;
+    font-size: 10px;
+    letter-spacing: 0.2em;
+    color: var(--accent);
+    text-transform: uppercase;
+    opacity: 0.75;
+    text-align: center;
+    line-height: 1.6;
+}
+ 
+.profile-subtitle span {
+    opacity: 0.45;
+    margin: 0 6px;
+}
+
 
 /*  Project Title Design */
 .projects {

@@ -346,7 +346,7 @@ function buildDetailDesc(p) {
             <iframe src="${p.video}" frameborder="0" allowfullscreen></iframe>
         </div>` : `
         <div class="video-placeholder">
-            <span class="vp-label">No demo video yet</span>
+            <span class="vp-label">video unavailable</span>
         </div>`}
         <a class="github-link-btn" href="${p.url}" target="_blank">
             View on GitHub <span class="arrow-icon">↗</span>
@@ -461,3 +461,4 @@ document.addEventListener('keydown', e => {
 
 // ── INIT ───────────────────────────────────────────────
 render(false);
+
